@@ -1,0 +1,21 @@
+{
+    "name": "jayson/jumia",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Jayson Sabino",
+            "email": "jaysonsabino01@gmail.com"
+        }
+    ],
+    "require": {
+        "league/route": "^4.2",
+        "zendframework/zend-diactoros": "^2.1",
+        "zendframework/zend-httphandlerrunner": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app",
+            "Test\\": "tests"
+        }
+    }
+}
