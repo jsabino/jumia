@@ -5,13 +5,19 @@ use Zend\Diactoros\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
 require 'vendor/autoload.php';
-$routes = require 'config/routes.php';
 
-$app = new Application();
-$app->registerRoutes($routes);
+try {
+    $routes = require 'config/routes.php';
 
-$request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+    $app = new Application();
+    $app->registerRoutes($routes);
 
-$response = $app->handleRequest($request);
-
-(new SapiEmitter())->emit($response);
+    $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+    $response = $app->handleRequest($request);
+} catch (\League\Route\Http\Exception $e) {
+    $response = (new \Zend\Diactoros\ResponseFactory())->createResponse($e->getStatusCode(), $e->getMessage());
+} catch (Error $e) {
+    $response = (new \Zend\Diactoros\ResponseFactory())->createResponse(500, "Internal server error");
+} finally {
+    (new SapiEmitter())->emit($response);
+}
