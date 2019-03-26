@@ -8,6 +8,13 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
+            <exclude>
+                <file>./app/Data/SQLiteDatabase.php</file>
+                <file>./app/Data/DatabaseInterface.php</file>
+                <file>./app/Application.php</file>
+                <directory>./app/Data/Exceptions</directory>
+                <directory>./app/Http/</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
