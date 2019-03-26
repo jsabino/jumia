@@ -13,9 +13,9 @@ class Country
      */
     private $phoneNumberValidator;
 
-    public function __construct(int $id, string $name, PhoneNumberValidator $phoneNumberValidator)
+    public function __construct(int $code, string $name, PhoneNumberValidator $phoneNumberValidator)
     {
-        $this->code = $id;
+        $this->code = $code;
         $this->name = $name;
         $this->phoneNumberValidator = $phoneNumberValidator;
     }
