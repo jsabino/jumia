@@ -24,6 +24,13 @@ final class PhoneNumberState
         return new PhoneNumberState(self::INVALID);
     }
 
+    public static function toSelectArray(): array {
+        return [
+            self::VALID => "Valid phone numbers",
+            self::INVALID => "Invalid phone numbers",
+        ];
+    }
+
     public function getDescription(): string
     {
         return $this->state;

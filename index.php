@@ -8,9 +8,11 @@ require 'vendor/autoload.php';
 
 try {
     $routes = require 'config/routes.php';
+    $dependencyContainer = require 'config/dependency_container.php';
 
     $app = new Application();
     $app->registerRoutes($routes);
+    $app->registerDependencyContainer($dependencyContainer);
 
     $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
     $response = $app->handleRequest($request);

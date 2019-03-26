@@ -1,3 +1,11 @@
+<?php
+use App\Enums\PhoneNumberState;
+
+/**
+ * @var \App\Domain\Maps\CountryMap $countries
+ * @var array $old
+ */
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,17 +27,25 @@
     <form>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="inputState">Select country</label>
-                <select id="inputState" class="form-control">
-                    <option selected>Choose...</option>
-                    <option>...</option>
+                <label for="countryCode">Select country</label>
+                <select id="countryCode" class="form-control">
+                    <option>Choose...</option>
+                    <?php
+                    foreach ($countries as $country) {
+                        echo "<option value='{$country->getCode()}'>{$country->getName()}</option>";
+                    }
+                    ?>
                 </select>
             </div>
             <div class="form-group col-md-4">
-                <label for="inputState">State of phone number</label>
-                <select id="inputState" class="form-control">
+                <label for="phoneNumberState">State of phone number</label>
+                <select id="phoneNumberState" class="form-control">
                     <option selected>Choose...</option>
-                    <option>...</option>
+                    <?php
+                    foreach (PhoneNumberState::toSelectArray() as $key => $value) {
+                        echo "<option value='{$key}'>{$value}</option>";
+                    }
+                    ?>
                 </select>
             </div>
         </div>
