@@ -2,6 +2,7 @@
 
 namespace App\Domain\Maps;
 
+use App\Data\Exceptions\RecordNotFoundException;
 use App\Domain\Country;
 
 /**
@@ -22,6 +23,10 @@ class CountryMap extends AbstractMap
 
     public function getByCode(int $code): Country
     {
+        if (empty($this->data[$code])) {
+            throw new RecordNotFoundException("The country with the code $code was not found.");
+        }
+
         return $this->data[$code];
     }
 }
