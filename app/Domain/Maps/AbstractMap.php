@@ -40,4 +40,36 @@ abstract class AbstractMap implements Iterator, Countable
     {
         return count($this->data);
     }
+
+    public function filter(callable $callback)
+    {
+        $newMap = new static();
+
+        foreach ($this->data as $item) {
+            $valid = $callback($item);
+
+            if ($valid) {
+                $newMap->add($item);
+            }
+        }
+
+        return $newMap;
+    }
+
+    public function map(callable $callback)
+    {
+        return array_map($callback, $this->data);
+    }
+
+    public function slice(int $offset, int $length = null)
+    {
+        $newData = array_slice($this->data, $offset, $length);
+        $newMap = new static();
+
+        foreach ($newData as $data) {
+            $newMap->add($data);
+        }
+
+        return $newMap;
+    }
 }
