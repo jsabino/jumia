@@ -21,7 +21,7 @@ $container->share(DatabaseInterface::class, function () {
     if (empty($databaseLocation)) {
         throw new RuntimeException("Environment variable DB_LOCATION is missing");
     }
-    return new SQLiteDatabase($databaseLocation ?? "");
+    return new SQLiteDatabase($databaseLocation);
 });
 
 $container->share(CustomerRepository::class)

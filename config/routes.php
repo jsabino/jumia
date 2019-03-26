@@ -1,5 +1,9 @@
 <?php
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PhoneNumberController;
+
 return [
-    ['GET', '/', [\App\Http\Controllers\HomeController::class, "index"]],
-    ['GET', '/phoneNumbers', [\App\Http\Controllers\PhoneNumberController::class, "searchPhoneNumbers"]],
+    ['GET', '/', [HomeController::class, "index"]],
+    ['GET', '/phoneNumbers', [PhoneNumberController::class, "searchPhoneNumbers"]],
 ];
