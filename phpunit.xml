@@ -5,4 +5,9 @@
         bootstrap="vendor/autoload.php"
         cacheResult="false"
         cacheTokens="false">
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+        </whitelist>
+    </filter>
 </phpunit>
