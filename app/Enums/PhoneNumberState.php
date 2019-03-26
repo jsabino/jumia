@@ -1,5 +1,8 @@
 <?php
+
 namespace App\Enums;
+
+use InvalidArgumentException;
 
 final class PhoneNumberState
 {
@@ -9,9 +12,13 @@ final class PhoneNumberState
 
     private $state;
 
-    private function __construct(string $state)
+    public function __construct(string $state)
     {
         $this->state = $state;
+
+        if (!in_array($this->state, array_keys(self::toSelectArray()))) {
+            throw new InvalidArgumentException("Unknown state: {$state}.");
+        }
     }
 
     public static function VALID(): PhoneNumberState
@@ -24,7 +31,8 @@ final class PhoneNumberState
         return new PhoneNumberState(self::INVALID);
     }
 
-    public static function toSelectArray(): array {
+    public static function toSelectArray(): array
+    {
         return [
             self::VALID => "Valid phone numbers",
             self::INVALID => "Invalid phone numbers",

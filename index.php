@@ -11,6 +11,7 @@ try {
     $dependencyContainer = require 'config/dependency_container.php';
 
     $app = new Application();
+    $app->loadEnvironmentVariables(__DIR__ . "/.env");
     $app->registerRoutes($routes);
     $app->registerDependencyContainer($dependencyContainer);
 
@@ -18,7 +19,7 @@ try {
     $response = $app->handleRequest($request);
 } catch (\League\Route\Http\Exception $e) {
     $response = (new \Zend\Diactoros\ResponseFactory())->createResponse($e->getStatusCode(), $e->getMessage());
-} catch (Error $e) {
+} catch (Throwable $e) {
     $response = (new \Zend\Diactoros\ResponseFactory())->createResponse(500, "Internal server error");
 } finally {
     (new SapiEmitter())->emit($response);

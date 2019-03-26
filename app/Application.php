@@ -21,6 +21,20 @@ class Application
         $this->router = new Router;
     }
 
+    public function loadEnvironmentVariables(string $environmentFile)
+    {
+        $contents = file_get_contents($environmentFile);
+        $rows = explode("\n", $contents);
+
+        foreach ($rows as $row) {
+            $row = trim($row);
+            if (empty($row) || strpos($row, "=") === false) {
+                continue;
+            }
+            putenv($row);
+        }
+    }
+
     public function registerRoutes(array $routes)
     {
         foreach ($routes as $route) {
