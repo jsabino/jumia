@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Data\CountryRepository;
 use App\Data\CustomerRepository;
 use App\Data\Filters\CustomerFilters;
+use App\Domain\Customer;
 use App\Domain\Maps\CustomerMap;
-use App\Domain\Maps\PhoneNumberMap;
-use App\Domain\PhoneNumber;
 use App\Enums\PhoneNumberState;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,11 +34,10 @@ class PhoneNumberController extends BaseController
 
         $customers = $this->searchCustomers($queryParams);
 
-        $filteredPhoneNumbers = $this->filterPhoneNumbers($customers, $queryParams);
-
-        $data = $filteredPhoneNumbers
+        $data = $customers
             ->slice($offset, $length)
-            ->map(function (PhoneNumber $phoneNumber) {
+            ->map(function (Customer $customer) {
+                $phoneNumber = $customer->getPhone();
                 $country = $this->countryRepository->findCountryByCode($phoneNumber->getCountryCode());
                 $state = $country->getPhoneNumberValidator()->validate($phoneNumber);
 
@@ -54,7 +52,7 @@ class PhoneNumberController extends BaseController
         $data = [
             'draw' => intval($queryParams['draw'] ?? 0),
             'recordsTotal' => $this->customerRepository->getTotalCount(),
-            'recordsFiltered' => count($filteredPhoneNumbers),
+            'recordsFiltered' => count($customers),
             'data' => $data,
         ];
 
@@ -67,25 +65,10 @@ class PhoneNumberController extends BaseController
         if (!empty($queryParams['countryCode']) && is_numeric($queryParams['countryCode'])) {
             $filters->setCountryCode($queryParams['countryCode']);
         }
-
-        return $this->customerRepository->findByFilters($filters);
-    }
-
-    private function filterPhoneNumbers(CustomerMap $customers, array $queryParams): PhoneNumberMap
-    {
-        $phoneNumbers = $customers->getPhoneNumbers();
-
-        if (empty($queryParams['phoneNumberState'])) {
-            return $phoneNumbers;
+        if (!empty($queryParams['phoneNumberState'])) {
+            $filters->setPhoneNumberState(new PhoneNumberState($queryParams['phoneNumberState']));
         }
 
-        $filteredState = new PhoneNumberState($queryParams['phoneNumberState']);
-
-        return $phoneNumbers->filter(function (PhoneNumber $phoneNumber) use ($filteredState) {
-            $country = $this->countryRepository->findCountryByCode($phoneNumber->getCountryCode());
-            $state = $country->getPhoneNumberValidator()->validate($phoneNumber);
-
-            return $state->getDescription() == $filteredState->getDescription();
-        });
+        return $this->customerRepository->findByFilters($filters);
     }
 }

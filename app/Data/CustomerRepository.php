@@ -5,6 +5,7 @@ namespace App\Data;
 use App\Data\Filters\CustomerFilters;
 use App\Domain\Customer;
 use App\Domain\Maps\CustomerMap;
+use App\Enums\PhoneNumberState;
 
 class CustomerRepository
 {
@@ -14,10 +15,15 @@ class CustomerRepository
      */
     private $database;
     private $customersCount;
+    /**
+     * @var CountryRepository
+     */
+    private $countryRepository;
 
-    public function __construct(DatabaseInterface $database)
+    public function __construct(DatabaseInterface $database, CountryRepository $countryRepository)
     {
         $this->database = $database;
+        $this->countryRepository = $countryRepository;
     }
 
     public function getTotalCount(): int
@@ -44,7 +50,13 @@ class CustomerRepository
 
         $customersArray = $this->database->getArray($sql, $params);
 
-        return $this->arrayToMap($customersArray);
+        $customers = $this->arrayToMap($customersArray);
+
+        if ($filters->hasPhoneNumberState()) {
+            $customers = $this->filterCustomersPhoneNumberState($customers, $filters->getPhoneNumberState());
+        }
+
+        return $customers;
     }
 
     private function arrayToMap(array $customersArray): CustomerMap
@@ -59,5 +71,20 @@ class CustomerRepository
         }
 
         return $customers;
+    }
+
+    private function filterCustomersPhoneNumberState(CustomerMap $customers, PhoneNumberState $filteredState): CustomerMap
+    {
+        if (count($customers) == 0) {
+            return $customers;
+        }
+
+        return $customers->filter(function (Customer $customer) use ($filteredState) {
+            $phoneNumber = $customer->getPhone();
+            $country = $this->countryRepository->findCountryByCode($phoneNumber->getCountryCode());
+            $state = $country->getPhoneNumberValidator()->validate($phoneNumber);
+
+            return $state->getDescription() == $filteredState->getDescription();
+        });
     }
 }

@@ -25,7 +25,8 @@ $container->share(DatabaseInterface::class, function () {
 });
 
 $container->share(CustomerRepository::class)
-    ->addArgument(DatabaseInterface::class);
+    ->addArgument(DatabaseInterface::class)
+    ->addArgument(CountryRepository::class);
 
 $container->add(HomeController::class)
     ->addArgument(CountryRepository::class);
