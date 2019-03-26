@@ -1,10 +1,12 @@
+[![Build Status](https://travis-ci.com/jsabino/jumia.svg?branch=master)](https://travis-ci.com/jsabino/jumia)
+
 # jumia
 
 A sample application to list phone numbers from multiples countries and allow to filter the numbers by country and by number's state (valid or invalid)
 
 ## Prerequisites
 
-- PHP 7.1 or greater
+- PHP 7.2 or greater
 - Composer
 - PDO SQLite extension
 
