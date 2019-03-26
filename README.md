@@ -14,7 +14,7 @@ A sample application to list phone numbers from multiples countries and allow to
 composer install
 ```
 
-## Running tests and coverage report
+## Running tests, coverage report and mess detector report
 
 To run tests:
 ```
@@ -24,6 +24,11 @@ composer test
 To generate code coverage report:
 ```
 composer coverage-report
+```
+
+To generate mess detector report:
+```
+composer phpmd
 ```
 
 ## Starting the application

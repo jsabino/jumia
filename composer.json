@@ -20,11 +20,13 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "8"
+        "phpunit/phpunit": "8",
+        "phpmd/phpmd": "^2.6"
     },
     "scripts": {
         "run": "php -S localhost:8000",
         "test": "phpunit tests",
+        "phpmd": "phpmd app html cleancode,codesize,controversial,design,naming,unusedcode --ignore-violations-on-exit > ./storage/build/phpmd/index.html && echo See the report in ./storage/build/phpmd/index.html",
         "coverage-report": "phpunit --coverage-html storage/build/phpunit tests && echo See the report in ./storage/build/phpunit/index.html"
     }
 }
