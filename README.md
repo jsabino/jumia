@@ -1,8 +1,10 @@
-[![Build Status](https://travis-ci.com/jsabino/jumia.svg?branch=master)](https://travis-ci.com/jsabino/jumia)
-
 # jumia
 
 A sample application to list phone numbers from multiples countries and allow to filter the numbers by country and by number's state (valid or invalid)
+
+[![Build Status](https://travis-ci.com/jsabino/jumia.svg?branch=master)](https://travis-ci.com/jsabino/jumia)
+[![codecov](https://codecov.io/gh/jsabino/jumia/branch/master/graph/badge.svg)](https://codecov.io/gh/jsabino/jumia)
+
 
 ## Prerequisites
 
