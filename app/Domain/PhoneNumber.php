@@ -5,7 +5,7 @@ namespace App\Domain;
 class PhoneNumber
 {
 
-    const PHONE_NUMBER_PATTERN = "/^\(d+\) ?(.*)/";
+    const PHONE_NUMBER_PATTERN = "/^\((\d+)\) ?(.*)/";
 
     private $fullNumber;
     private $countryCode;
